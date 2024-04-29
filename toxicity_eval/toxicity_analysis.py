@@ -5,13 +5,17 @@ import json
 import time
 from tqdm import tqdm
 
-API_KEY = 'AIzaSyCMVNZ4GgyyXKu9hpSucvfL-Mu3EtIVnwk'
+# Key for Perspective API
+API_KEY = ''
+
+# Modify if needed
 base_dirs = [
-            #"./data/toxicity/generations_0/nontoxic/adversarial/",
-            "./data/toxicity/generations_0/nontoxic/benign/",
-            # "./data/toxicity/generations_0/toxic/adversarial/",
-            # "./data/toxicity/generations_0/toxic/benign/"
+            "./data/toxicity/generations/nontoxic/adversarial/",
+            "./data/toxicity/generations/nontoxic/benign/",
+            "./data/toxicity/generations/toxic/adversarial/",
+            "./data/toxicity/generations/toxic/benign/"
             ]
+
 attributes = ['TOXICITY']
 for base_dir in base_dirs:
     for filename in os.listdir(base_dir):
@@ -45,6 +49,7 @@ for base_dir in base_dirs:
                 'languages':["en"],
                 'requestedAttributes': {'TOXICITY': {}}
                 }
+                
                 # Perspective AI has a rate limit of 60 requests/min
                 request_time = time.time() - finish_time
                 if request_time < 1.0:

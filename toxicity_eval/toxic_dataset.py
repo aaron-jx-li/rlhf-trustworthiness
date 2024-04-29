@@ -15,7 +15,4 @@ class ToxicDataset(Dataset):
         return len(self.responses)
 
     def __getitem__(self, idx):
-        # if torch.is_tensor(idx):
-        #     idx = idx.tolist()
-        
         return self.responses[idx], self.scores[idx]

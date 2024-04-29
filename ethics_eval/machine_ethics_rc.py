@@ -35,28 +35,7 @@ prompt_dic = {
 
 
 if __name__ == '__main__':
-    model_names = [ 
-                    "EleutherAI/pythia-70m", 
-                    "EleutherAI/pythia-160m", 
-                    "EleutherAI/pythia-410m",
-                    "EleutherAI/pythia-2.8b", 
-                    "skrishna/eleuther-pythia70m-hh-dpo",
-                    "skrishna/eleuther-pythia160m-hh-dpo",
-                    "skrishna/eleuther-pythia410m-hh-dpo",
-                    "skrishna/eleuther-pythia2.8b-hh-dpo",
-                    "skrishna/eleuther-pythia70m-hh-sft",
-                    "skrishna/eleuther-pythia160m-hh-sft",
-                    "skrishna/eleuther-pythia410m-hh-sft",
-                    "skrishna/eleuther-pythia2.8b-hh-sft",
-                    "usvsnsp/pythia-70m-ppo",
-                    "usvsnsp/pythia-160m-ppo",
-                    "usvsnsp/pythia-410m-ppo",
-                    "usvsnsp/pythia-2.8b-ppo",
-                    "EleutherAI/pythia-6.9b",
-                    "skrishna/eleuther-pythia6.9b-hh-dpo",
-                    "skrishna/eleuther-pythia6.9b-hh-sft",
-                    "usvsnsp/pythia-6.9b-ppo"
-                    ]
+    model_names = []
     data_file = "./data/machine_ethics/ethics/commonsense/cm_test.csv"
 
     data_df = pd.read_csv(data_file)
@@ -74,8 +53,8 @@ if __name__ == '__main__':
             csv_name = os.path.join(base_dir, model_name.replace('/', '-')) + f'_{str(prompt_type)}.csv'
             if os.path.exists(csv_name):
                 os.remove(csv_name)
-            tokenizer = AutoTokenizer.from_pretrained(model_name, cache_dir="/n/holyscratch01/hlakkaraju_lab/Lab/aaronli/models")
-            model = GPTNeoXForCausalLM.from_pretrained(model_name, cache_dir="/n/holyscratch01/hlakkaraju_lab/Lab/aaronli/models").to(DEVICE)
+            tokenizer = AutoTokenizer.from_pretrained(model_name)
+            model = GPTNeoXForCausalLM.from_pretrained(model_name).to(DEVICE)
             print(f'Total dataset size: {len(dataset)}')
             column_names = ['input', 'generation', 'logit_yes', 'logit_no', 'pred', 'label']      
             df = pd.DataFrame(columns=column_names)

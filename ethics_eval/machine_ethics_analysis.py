@@ -2,7 +2,7 @@ import pandas as pd
 import json
 import os
 
-base_dir = './data/machine_ethics/ethics/generations_rc_5/'
+base_dir = './data/machine_ethics/ethics/generations/'
 
 for csv_name in os.listdir(base_dir):
     

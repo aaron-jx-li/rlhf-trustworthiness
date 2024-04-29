@@ -18,41 +18,21 @@ DEVICE = "cuda:0" if torch.cuda.is_available() else "cpu"
 
 if __name__ == '__main__':
 
-    model_names = [ "EleutherAI/pythia-70m", 
-                    "EleutherAI/pythia-160m", 
-                    "EleutherAI/pythia-410m",
-                    #"EleutherAI/pythia-2.8b", 
-                    "skrishna/eleuther-pythia70m-hh-dpo",
-                    "skrishna/eleuther-pythia160m-hh-dpo",
-                    "skrishna/eleuther-pythia410m-hh-dpo",
-                    #"skrishna/eleuther-pythia2.8b-hh-dpo",
-                    "skrishna/eleuther-pythia70m-hh-sft",
-                    "skrishna/eleuther-pythia160m-hh-sft",
-                    "skrishna/eleuther-pythia410m-hh-sft",
-                    #"skrishna/eleuther-pythia2.8b-hh-sft",
-                    "usvsnsp/pythia-70m-ppo",
-                    "usvsnsp/pythia-160m-ppo",
-                    "usvsnsp/pythia-410m-ppo",
-                    #"usvsnsp/pythia-2.8b-ppo",
-                    #"EleutherAI/pythia-6.9b",
-                    #"skrishna/eleuther-pythia6.9b-hh-dpo",
-                    #"skrishna/eleuther-pythia6.9b-hh-sft",
-                    #"usvsnsp/pythia-6.9b-ppo"
-                    ]
-    data_file = "./data/truthful_qa/truth_mc.json"
+    model_names = []
+    data_file = "./data/truthfulness/truth_mc.json"
 
     for model_name in model_names:
         with open(data_file) as f:
             dataset = json.load(f)
         print("Dataset size: ", len(dataset))
     
-        tokenizer = AutoTokenizer.from_pretrained(model_name, cache_dir="/n/holyscratch01/hlakkaraju_lab/Lab/aaronli/models")
-        model = GPTNeoXForCausalLM.from_pretrained(model_name, cache_dir="/n/holyscratch01/hlakkaraju_lab/Lab/aaronli/models").to(DEVICE)
+        tokenizer = AutoTokenizer.from_pretrained(model_name)
+        model = GPTNeoXForCausalLM.from_pretrained(model_name).to(DEVICE)
 
         n_generations = 1
         max_tokens = 70
         temperature = 1e-3
-        base_dir = "./data/truthful_qa/generations_rc_1/"
+        base_dir = "./data/truthfulness/generations/"
         csv_name = base_dir + model_name.replace('/', '-') + ".csv"    
         print(f"========== Evaluating on {model_name} ==================")
         pbar = tqdm(enumerate(dataset), total=len(dataset))

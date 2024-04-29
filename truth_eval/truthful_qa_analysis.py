@@ -7,7 +7,8 @@ import argparse
 import json
 import pandas as pd
 
-base_dir = "./data/truthful_qa/generations_rc_1/"
+# Modify if necessary
+base_dir = "./data/truthful_qa/generations/"
 data_file = "./data/truthful_qa/truth_mc.json"
 with open(data_file) as f:
     dataset = json.load(f)
