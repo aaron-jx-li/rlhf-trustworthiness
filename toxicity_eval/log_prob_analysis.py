@@ -3,7 +3,8 @@ import os
 import numpy as np
 import re
 
-base_dir = "../data/toxicity/generations_0/nontoxic/benign/"
+# Modify if necessary
+base_dir = "../data/toxicity/generations/"
 model_type = 'ppo'
 for filename in os.listdir(base_dir):
     if filename.endswith('_analyzed.csv'):

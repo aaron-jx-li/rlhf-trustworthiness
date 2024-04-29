@@ -11,46 +11,28 @@ from toxic_dataset import ToxicDataset
 from torch.utils.data import Dataset, Subset
 from torch.utils.data import DataLoader
 from tqdm import tqdm
-from train_probe import ToxicityProbe, ToxicityProbeClassify
+from train_probe import ToxicityProbeClassify
 
+# Modify if necessary
+train_file_name = "../data/toxicity/response_datasets/realtoxicity_train.csv"
+test_file_name = "../data/toxicity/response_datasets/realtoxicity_test.csv"
 type_to_dirs = [
-    {'data_dir': '/n/home01/aaronli/DecodingTrust/data/toxicity/generations/toxic/benign/', 'out_dir': '/n/home01/aaronli/DecodingTrust/probe_models/realtoxicity/toxic/benign/'}, 
-    {'data_dir': '/n/home01/aaronli/DecodingTrust/data/toxicity/generations/toxic/adversarial/', 'out_dir': '/n/home01/aaronli/DecodingTrust/probe_models/realtoxicity/toxic/adversarial/'}, 
-    {'data_dir': '/n/home01/aaronli/DecodingTrust/data/toxicity/generations/nontoxic/benign/', 'out_dir': '/n/home01/aaronli/DecodingTrust/probe_models/realtoxicity/nontoxic/benign/'}, 
-    {'data_dir': '/n/home01/aaronli/DecodingTrust/data/toxicity/generations/nontoxic/adversarial/', 'out_dir': '/n/home01/aaronli/DecodingTrust/probe_models/realtoxicity/nontoxic/adversarial/'}
+    {'data_dir': '../data/toxicity/generations/toxic/benign/', 'out_dir': '../probe_models/realtoxicity/toxic/benign/'}, 
+    {'data_dir': '../data/toxicity/generations/toxic/adversarial/', 'out_dir': '../probe_models/realtoxicity/toxic/adversarial/'}, 
+    {'data_dir': '../data/toxicity/generations/nontoxic/benign/', 'out_dir': '../probe_models/realtoxicity/nontoxic/benign/'}, 
+    {'data_dir': '../data/toxicity/generations/nontoxic/adversarial/', 'out_dir': '../probe_models/realtoxicity/nontoxic/adversarial/'}
     ]
 
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
-model_names = [
-               "EleutherAI/pythia-70m", 
-               "EleutherAI/pythia-160m", 
-               "EleutherAI/pythia-410m",
-               "EleutherAI/pythia-2.8b", 
-               "skrishna/eleuther-pythia70m-hh-dpo",
-               "skrishna/eleuther-pythia160m-hh-dpo",
-               "skrishna/eleuther-pythia410m-hh-dpo",
-               "skrishna/eleuther-pythia2.8b-hh-dpo",
-               "skrishna/eleuther-pythia70m-hh-sft",
-               "skrishna/eleuther-pythia160m-hh-sft",
-               "skrishna/eleuther-pythia410m-hh-sft",
-               "skrishna/eleuther-pythia2.8b-hh-sft",
-               "usvsnsp/pythia-70m-ppo",
-               "usvsnsp/pythia-160m-ppo",
-               "usvsnsp/pythia-410m-ppo",
-               "usvsnsp/pythia-2.8b-ppo",
-               "EleutherAI/pythia-6.9b",
-                "skrishna/eleuther-pythia6.9b-hh-dpo",
-                "skrishna/eleuther-pythia6.9b-hh-sft",
-                "usvsnsp/pythia-6.9b-ppo"
-            ]
+model_names = []
 
 for prompt_type in range(len(type_to_dirs)):
     data_dir = type_to_dirs[prompt_type]['data_dir']
     out_dir = type_to_dirs[prompt_type]['out_dir']
     
     for name in model_names:
-        tokenizer = AutoTokenizer.from_pretrained(name, cache_dir="/n/holyscratch01/hlakkaraju_lab/Lab/aaronli/models")
-        base_model = GPTNeoXForCausalLM.from_pretrained(name, cache_dir="/n/holyscratch01/hlakkaraju_lab/Lab/aaronli/models").to(device)
+        tokenizer = AutoTokenizer.from_pretrained(name)
+        base_model = GPTNeoXForCausalLM.from_pretrained(name).to(device)
 
         model = ToxicityProbeClassify(base_model)
         train_df = pd.read_csv(train_file_name)

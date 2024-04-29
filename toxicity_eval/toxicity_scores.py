@@ -2,7 +2,7 @@ import pandas as pd
 import os
 
 # Modify if needed
-base_dir = "../data/toxicity/generations/toxic/adversarial/"
+base_dir = "../data/toxicity/generations/"
 attribute = 'TOXICITY'
 n_generations = 5
 expected_max = False
