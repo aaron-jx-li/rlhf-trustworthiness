@@ -27,15 +27,13 @@ This project is structured around subdirectories dedicated to each area of trust
 ├── stereotype_eval/
 ├── machine_ethics/
 ├── privacy/
-├── ood/
 ├── machine_ethics/
-└── fairness/
 ```
 
 
 (⚠️WARNING: This paper contains model outputs that may be considered offensive.)
 
-In general, python scripts end with `_exp.py` are used for language model inference, `_analysis.py` are used for calculating the specific benchmark values. 
+In general, python scripts end with `_exp.py` are used for language model inference, and `_analysis.py` are used for calculating the numerical benchmark values. Other area-specific analysis will be explained in the corresponding subdirectory.
 
 ## [Important] Candidate models
 In this project, we mainly focus on the open source Pythia suite, and here are the links to the specific models hosted on **Huggingface**
